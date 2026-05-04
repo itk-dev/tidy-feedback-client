@@ -12,6 +12,7 @@
     "autoload": {
         "psr-4": {
             "ItkDev\\TidyFeedbackClient\\": "src/",
+            "ItkDev\\TidyFeedbackClient\\Drupal\\": "drupal/src/",
             "ItkDev\\TidyFeedbackClientBundle\\": "symfony/src/"
         }
     },
