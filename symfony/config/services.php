@@ -10,5 +10,4 @@ return function (ContainerConfigurator $container): void {
     ;
 
     $services->load('ItkDev\\TidyFeedbackClient\\', '../../src/');
-    $services->load('ItkDev\\TidyFeedbackClientBundle\\', '../src/');
 };

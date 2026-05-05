@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace ItkDev\TidyFeedbackClient;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Shared helper for embedding the Tidy Feedback widget.
@@ -13,9 +15,10 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
  * methods for generating the widget script tag and determining
  * whether injection should occur on a given request.
  *
- * Used by both the Symfony bundle and the Drupal module.
+ * Implements EventSubscriberInterface so it can be registered
+ * directly as a subscriber in both Symfony and Drupal.
  */
-final class TidyFeedbackClientHelper
+final class TidyFeedbackClientHelper implements EventSubscriberInterface
 {
     private const string ENV_URL = 'TIDY_FEEDBACK_CLIENT_URL';
     private const string ENV_API_KEY = 'TIDY_FEEDBACK_CLIENT_API_KEY';
@@ -23,6 +26,18 @@ final class TidyFeedbackClientHelper
     private const string ENV_DISABLE_PATTERN = 'TIDY_FEEDBACK_CLIENT_DISABLE_PATTERN';
 
     private ?array $config = null;
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            KernelEvents::RESPONSE => 'onKernelResponse',
+        ];
+    }
+
+    public function onKernelResponse(ResponseEvent $event): void
+    {
+        $this->injectWidget($event);
+    }
 
     /**
      * Get the widget script tag for embedding before </body>.

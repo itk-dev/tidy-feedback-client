@@ -1,10 +1,5 @@
 services:
-    ItkDev\TidyFeedbackClient\TidyFeedbackClientHelper:
-        class: ItkDev\TidyFeedbackClient\TidyFeedbackClientHelper
-
     tidy_feedback_client.widget_injector:
-        class: ItkDev\TidyFeedbackClient\Drupal\TidyFeedbackClientSubscriber
-        arguments:
-            - "@ItkDev\\TidyFeedbackClient\\TidyFeedbackClientHelper"
+        class: ItkDev\TidyFeedbackClient\TidyFeedbackClientHelper
         tags:
             - { name: event_subscriber }
