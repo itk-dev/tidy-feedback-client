@@ -169,14 +169,15 @@ final class TidyFeedbackClientHelper implements EventSubscriberInterface
     {
         $vars = [];
 
-        // Determine project root from vendor path
-        $vendorDir = dirname(__DIR__, 4);
-        if (!is_dir($vendorDir.'/vendor')) {
-            $vendorDir = dirname(__DIR__, 2);
+        // Project root is one level up from the document root (web/ or public/)
+        $docRoot = $_SERVER['DOCUMENT_ROOT'] ?? '';
+        if ('' === $docRoot) {
+            return $vars;
         }
+        $projectRoot = dirname($docRoot);
 
         foreach (['.env', '.env.local'] as $file) {
-            $path = $vendorDir.'/'.$file;
+            $path = $projectRoot.'/'.$file;
             if (!is_file($path)) {
                 continue;
             }
