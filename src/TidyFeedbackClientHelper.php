@@ -126,6 +126,8 @@ final class TidyFeedbackClientHelper implements EventSubscriberInterface
     /**
      * Read a configuration value from the environment.
      *
+     * Checks (in order): getenv(), $_ENV, $_SERVER, and .env.local file.
+     *
      * @param string $name the environment variable name
      *
      * @return string|null the value, or null if not set
@@ -133,7 +135,11 @@ final class TidyFeedbackClientHelper implements EventSubscriberInterface
     private function getConfig(string $name): ?string
     {
         if (null === $this->config) {
-            $getEnv = static fn (string $name) => getenv($name) ?: ($_ENV[$name] ?? null);
+            $fileVars = $this->parseDotEnvFiles();
+
+            $getEnv = static function (string $name) use ($fileVars): ?string {
+                return getenv($name) ?: ($_ENV[$name] ?? $_SERVER[$name] ?? $fileVars[$name] ?? null);
+            };
 
             $this->config = [
                 self::ENV_URL => $getEnv(self::ENV_URL),
@@ -144,5 +150,49 @@ final class TidyFeedbackClientHelper implements EventSubscriberInterface
         }
 
         return $this->config[$name] ?? null;
+    }
+
+    /**
+     * Parse .env.local and .env files from the project root.
+     *
+     * PHP-FPM clears environment variables by default (clear_env=yes),
+     * so getenv() and $_ENV are empty for web requests. Drupal does not
+     * use Symfony's Dotenv component, so .env files are not loaded
+     * automatically. This method reads them directly as a fallback.
+     *
+     * Looks for files relative to the vendor directory. Values in
+     * .env.local take precedence over .env.
+     *
+     * @return array associative array of parsed key-value pairs
+     */
+    private function parseDotEnvFiles(): array
+    {
+        $vars = [];
+
+        // Determine project root from vendor path
+        $vendorDir = dirname(__DIR__, 4);
+        if (!is_dir($vendorDir.'/vendor')) {
+            $vendorDir = dirname(__DIR__, 2);
+        }
+
+        foreach (['.env', '.env.local'] as $file) {
+            $path = $vendorDir.'/'.$file;
+            if (!is_file($path)) {
+                continue;
+            }
+            $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            foreach ($lines as $line) {
+                $line = trim($line);
+                if ('' === $line || str_starts_with($line, '#')) {
+                    continue;
+                }
+                if (str_contains($line, '=')) {
+                    [$key, $value] = explode('=', $line, 2);
+                    $vars[trim($key)] = trim($value);
+                }
+            }
+        }
+
+        return $vars;
     }
 }
