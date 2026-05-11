@@ -9,5 +9,5 @@ return function (ContainerConfigurator $container): void {
         ->autoconfigure()
     ;
 
-    $services->load('ItkDev\\TidyFeedbackClient\\', '../../src/');
+    $services->load('ItkDev\\ItkFeedbackClient\\', '../../src/');
 };

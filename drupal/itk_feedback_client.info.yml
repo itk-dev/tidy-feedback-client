@@ -1,0 +1,5 @@
+name: ITK Feedback Client
+type: module
+description: Embeds the Itk Feedback widget on all pages.
+core_version_requirement: ^10 || ^11
+package: ITK Dev

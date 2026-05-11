@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace ItkDev\TidyFeedbackClient;
+namespace ItkDev\ItkFeedbackClient;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Shared helper for embedding the Tidy Feedback widget.
+ * Shared helper for embedding the Itk Feedback widget.
  *
  * Reads configuration from environment variables and provides
  * methods for generating the widget script tag and determining
@@ -18,12 +18,12 @@ use Symfony\Component\HttpKernel\KernelEvents;
  * Implements EventSubscriberInterface so it can be registered
  * directly as a subscriber in both Symfony and Drupal.
  */
-final class TidyFeedbackClientHelper implements EventSubscriberInterface
+final class ItkFeedbackClientHelper implements EventSubscriberInterface
 {
-    private const string ENV_URL = 'TIDY_FEEDBACK_CLIENT_URL';
-    private const string ENV_API_KEY = 'TIDY_FEEDBACK_CLIENT_API_KEY';
-    private const string ENV_DISABLE = 'TIDY_FEEDBACK_CLIENT_DISABLE';
-    private const string ENV_DISABLE_PATTERN = 'TIDY_FEEDBACK_CLIENT_DISABLE_PATTERN';
+    private const string ENV_URL = 'ITK_FEEDBACK_CLIENT_URL';
+    private const string ENV_API_KEY = 'ITK_FEEDBACK_CLIENT_API_KEY';
+    private const string ENV_DISABLE = 'ITK_FEEDBACK_CLIENT_DISABLE';
+    private const string ENV_DISABLE_PATTERN = 'ITK_FEEDBACK_CLIENT_DISABLE_PATTERN';
 
     private ?array $config = null;
 

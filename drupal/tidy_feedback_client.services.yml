@@ -1,5 +1,0 @@
-services:
-    tidy_feedback_client.widget_injector:
-        class: ItkDev\TidyFeedbackClient\TidyFeedbackClientHelper
-        tags:
-            - { name: event_subscriber }

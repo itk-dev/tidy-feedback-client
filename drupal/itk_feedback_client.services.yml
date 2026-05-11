@@ -1,0 +1,5 @@
+services:
+    itk_feedback_client.widget_injector:
+        class: ItkDev\ItkFeedbackClient\ItkFeedbackClientHelper
+        tags:
+            - { name: event_subscriber }

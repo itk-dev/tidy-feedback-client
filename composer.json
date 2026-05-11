@@ -1,6 +1,6 @@
 {
-    "name": "itk-dev/tidy-feedback-client",
-    "description": "Lightweight client for embedding the Tidy Feedback widget on Symfony and Drupal sites",
+    "name": "itk-dev/itk-feedback-client",
+    "description": "Lightweight client for embedding the Itk Feedback widget on Symfony and Drupal sites",
     "license": "MIT",
     "type": "drupal-module",
     "require": {
@@ -11,8 +11,8 @@
     },
     "autoload": {
         "psr-4": {
-            "ItkDev\\TidyFeedbackClient\\": "src/",
-            "ItkDev\\TidyFeedbackClientBundle\\": "symfony/src/"
+            "ItkDev\\ItkFeedbackClient\\": "src/",
+            "ItkDev\\ItkFeedbackClientBundle\\": "symfony/src/"
         }
     },
     "config": {
